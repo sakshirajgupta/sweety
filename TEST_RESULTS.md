@@ -65,3 +65,7 @@ Remaining limits: SW-001's form and report date controls remain independent when
 ## SW-001 fix verification — 16 November 2026
 
 The previously recorded independent date controls are now synchronized in add mode. Browser checks passed in both directions, and verified report date/Today are disabled during editing, Cancel restores add mode, and Today aligns both dates. No readings were submitted. All 22 frontend tests passed and production build succeeded; backend code was unchanged. Older open-issue observations above describe historical states before this fix.
+
+## Clean-install verification on Node.js 24
+
+Verified with Node.js v24.22.3 and npm v11.19.1. Copied submission files into a fresh temporary directory without `.env` or `node_modules`, installed server and client dependencies using `npm ci`, then ran the root test command and production build. **44/44 tests passed** (22 backend, 22 frontend), no failures or TODOs, and the production build succeeded. Both dependency audits reported zero known vulnerabilities. npm reported package lifecycle-script approval notices; installed binaries were sufficient for the tests and build on this Mac. Linux/Windows installation has not been independently verified. No Neon credentials or data were used.

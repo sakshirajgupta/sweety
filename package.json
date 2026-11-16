@@ -9,5 +9,8 @@
     "build": "npm --prefix client run build",
     "test:server": "npm --prefix server test",
     "test:client": "npm --prefix client test"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }

@@ -4,7 +4,7 @@ A personal glucose diary built with React + Vite, Node.js + Express, and Postgre
 
 ## Run locally
 
-Requires Node.js 22.12+ (or a compatible newer version), npm, and a PostgreSQL database. Neon works; PostgreSQL does not have to be installed locally.
+Requires Node.js 22.12+ (Node.js 24 recommended), npm, and a PostgreSQL database. The repository includes `.nvmrc`; if you use nvm, run `nvm install` and `nvm use` from this folder. Neon works; PostgreSQL does not have to be installed locally.
 
 1. In `server`, run `npm install`.
 2. Copy `server/.env.example` to `server/.env` **only if `.env` does not already exist**. Keep your existing settings when upgrading.
