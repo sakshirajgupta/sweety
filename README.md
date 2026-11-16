@@ -17,6 +17,12 @@ Requires Node.js 22.12+ (Node.js 24 recommended), npm, and a PostgreSQL database
 
 The Vite development proxy forwards `/api` to port 4000. If you change the backend port, update `client/vite.config.js`. No frontend environment variables or database credentials are needed. All backend variables are listed in `server/.env.example`; never commit `.env`.
 
+## Automated checks on GitHub
+
+The [Tests and build workflow](https://github.com/sakshirajgupta/sweety/actions/workflows/ci.yml) runs on pushes to `main` and pull requests. It installs the exact dependencies from both lock files, runs backend and frontend tests, and builds the React frontend on Ubuntu with the Node version in `.nvmrc`. You can also start it manually from the Actions page.
+
+No repository secrets or Neon connection are required: tests use an isolated in-memory database and test-only credentials. A failed install, test or build marks the workflow as failed. The workflow verifies the app; it does not deploy it or modify a real database.
+
 ## Database and optional demo seed
 
 Tables: `users` (name, normalized unique email, bcrypt password hash) and `readings` (owner, calendar date, slot, integer value). Foreign keys enforce ownership references. Four allowed slots plus a unique constraint on `(user_id, reading_date, slot)` prevent duplicates and cap a day at four entries, including simultaneous requests.

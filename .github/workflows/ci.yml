@@ -1,0 +1,47 @@
+name: Tests and build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Test and build on Node 24
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            server/package-lock.json
+            client/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci --prefix server
+
+      - name: Install frontend dependencies
+        run: npm ci --prefix client
+
+      # Tests use pg-mem and test-only secrets, never a real database or .env.
+      - name: Run backend and frontend tests
+        run: npm test
+
+      - name: Build frontend
+        run: npm run build
