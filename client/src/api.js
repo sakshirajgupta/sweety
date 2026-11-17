@@ -4,8 +4,10 @@ function savedToken() {
   catch { return null; }
 }
 let token = savedToken();
+let sessionGeneration = 0;
 export function setToken(value) {
   token = value;
+  sessionGeneration++;
   try {
     if (value) window.sessionStorage.setItem(SESSION_KEY, value);
     else window.sessionStorage.removeItem(SESSION_KEY);
@@ -13,6 +15,7 @@ export function setToken(value) {
 }
 
 export async function api(path, { method = 'GET', body, signal } = {}) {
+  const requestGeneration = sessionGeneration;
   let response;
   try {
     response = await fetch(`/api${path}`, {
@@ -30,7 +33,7 @@ export async function api(path, { method = 'GET', body, signal } = {}) {
   if (!response.ok || !data) {
     const error = new Error(data?.message || 'The server did not return a valid response. Check that the backend is running and try again.');
     error.status = response.status;
-    if (response.status === 401 && path !== '/auth/login' && path !== '/auth/register') {
+    if (response.status === 401 && requestGeneration === sessionGeneration && path !== '/auth/login' && path !== '/auth/register') {
       setToken(null);
       window.dispatchEvent(new Event('session-expired'));
     }

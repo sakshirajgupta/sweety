@@ -61,3 +61,21 @@ test('incorrect login does not trigger a session-expired notification', async ()
   await assert.rejects((await load()).api('/auth/login', { method: 'POST', body: {} }), /Invalid email/);
   assert.equal(expired, false);
 });
+
+
+test('a stale 401 cannot expire a newer login, even if its token text is identical', async () => {
+  const page = await load();
+  let expiryEvents = 0;
+  events.addEventListener('session-expired', () => { expiryEvents++; });
+  for (const newToken of ['new-token', 'old-token']) {
+    page.setToken('old-token');
+    let resolve;
+    globalThis.fetch = () => new Promise(done => { resolve = done; });
+    const pending = page.api('/readings');
+    page.setToken(newToken);
+    resolve(reply({ message: 'Expired old session' }, 401));
+    await assert.rejects(pending, /Expired old session/);
+    assert.equal(storage.get('sweety.token'), newToken);
+  }
+  assert.equal(expiryEvents, 0);
+});
