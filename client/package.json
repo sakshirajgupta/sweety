@@ -7,7 +7,9 @@
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "node --test test/*.test.js"
+    "test": "npm run test:unit && npm run test:ui",
+    "test:unit": "node --test test/*.test.js",
+    "test:ui": "vitest run"
   },
   "dependencies": {
     "react": "^19.2.4",
@@ -15,6 +17,11 @@
     "react-router-dom": "^7.0.0"
   },
   "devDependencies": {
-    "vite": "^7.0.0"
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.12",
+    "jsdom": "^31.0.1",
+    "vite": "^7.0.0",
+    "vitest": "^5.1.0"
   }
 }

@@ -82,7 +82,7 @@ When you return to a visible dashboard tab, readings and reports are revalidated
 - `server/schema.sql`: the database table definitions.
 - `server/scripts/`: explicit setup and fictional demo-data scripts.
 - `server/test/api.test.js`: repeatable tests that cannot reach your real database.
-- `client/src/main.jsx`: React login, registration, dashboard, forms, reports and delete confirmation.
+- `client/src/App.jsx`: React login, registration, dashboard, forms, reports and delete confirmation. `client/src/main.jsx` mounts the app.
 - `client/src/api.js`: HTTP requests and in-memory login token.
 - `client/src/styles.css`: responsive styling.
 
@@ -111,3 +111,7 @@ No public repository or hosting is created automatically. Screenshots and browse
 ### Real PostgreSQL integration checks
 
 CI also creates a disposable PostgreSQL 17 service and runs `npm run test:postgres --prefix server`. It applies the unchanged schema in a random test schema, tests actual constraints/date parsing/overlapping requests, then drops that generated schema. It never imports `.env` or the application database pool. `SWEETY_TEST_DATABASE_URL` is test-only: the command refuses external hosts and requires the `sweety_test` database and role on localhost. Never point it at Neon. Local use requires your own disposable PostgreSQL service; normal `npm test` still needs no database server.
+
+### Dashboard interaction tests
+
+`npm run test:ui --prefix client` runs Vitest, React Testing Library and jsdom against the mounted React app with a mocked API. Coverage includes bidirectional date synchronization, Today, session/date restoration on remount, edit navigation locks, cancellation of edits/deletion, failure/retry, and refreshing on tab return while preserving input. `npm test` includes these checks alongside the existing unit/API suites. Real browser rendering, native dialog behaviour and visual layout still benefit from browser QA.

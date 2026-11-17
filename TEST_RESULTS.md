@@ -69,3 +69,9 @@ The previously recorded independent date controls are now synchronized in add mo
 ## Clean-install verification on Node.js 24
 
 Verified with Node.js v24.22.3 and npm v11.19.1. Copied submission files into a fresh temporary directory without `.env` or `node_modules`, installed server and client dependencies using `npm ci`, then ran the root test command and production build. **44/44 tests passed** (22 backend, 22 frontend), no failures or TODOs, and the production build succeeded. Both dependency audits reported zero known vulnerabilities. npm reported package lifecycle-script approval notices; installed binaries were sufficient for the tests and build on this Mac. Linux/Windows installation has not been independently verified. No Neon credentials or data were used.
+
+## GitHub issues #1–#4 — 17 November 2026
+
+Each issue has its own implementation commit. The API helper now ignores stale 401 responses from earlier session generations. Returning to a visible tab revalidates reports/readings without clearing form state. CI includes five real PostgreSQL integration tests using an isolated local service and unchanged schema; the first run passed. Seven mounted-dashboard interaction tests now cover date sync, Today, session/date remount, edit locks/cancellation, deletion cancellation, errors/retry and tab return preserving input.
+
+Current local verification: 22 backend tests, 25 frontend unit tests and 7 mounted-dashboard tests pass (54 total); production build succeeds. The additional five PostgreSQL tests execute on GitHub, where the disposable service is available. No Neon credentials or records were used. Dashboard components moved from `main.jsx` into `App.jsx` to allow testing; `main.jsx` remains the browser entrypoint. Native browser layout/dialog behaviour still needs browser QA beyond jsdom.
