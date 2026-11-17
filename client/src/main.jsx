@@ -4,6 +4,7 @@ import { BrowserRouter, Link, Navigate, Route, Routes, useNavigate } from 'react
 import { api, setToken, restoreSession } from './api';
 import './styles.css';
 import SummaryCard from './SummaryCard';
+import { subscribeToTabReturn } from './tab-refresh';
 import { readingChanges } from './reading-changes';
 import { loadSelectedDate, saveSelectedDate } from './selected-date';
 
@@ -58,6 +59,10 @@ function Dashboard({ user, onLogout }) {
   const [deleting, setDeleting] = useState(null);
   const [deleteError, setDeleteError] = useState('');
   useEffect(() => { saveSelectedDate(user.id, selected); }, [user.id, selected]);
+  useEffect(() => {
+    if (busy) return;
+    return subscribeToTabReturn(() => setRevision(value => value + 1));
+  }, [busy]);
   useEffect(() => {
     const controller = new AbortController();
     setLoading(true); setLoadError(''); setReports(null); setReadings([]);

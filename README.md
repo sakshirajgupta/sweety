@@ -72,6 +72,8 @@ All reading/report endpoints require `Authorization: Bearer <token>`. Only regis
 
 Slots: `morning`, `after_breakfast`, `after_lunch`, `after_dinner`. Values must be JSON numbers and whole integers from 40 to 600. Dates cannot be in the future. Duplicate slots return 409. Unknown/not-owned reading IDs return the same 404. Missing/invalid/expired tokens return 401. Reports return null statistics and count 0 when empty; the UI shows a friendly message. Averages are calculated across individual readings and displayed to one decimal place.
 
+When you return to a visible dashboard tab, readings and reports are revalidated. This preserves the selected date and unsaved form input; it does not continuously stream updates to an unfocused tab.
+
 ## Files explained
 
 - `server/index.js`: loads settings, checks the database and starts the server.
