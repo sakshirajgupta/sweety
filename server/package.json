@@ -8,7 +8,8 @@
     "dev": "node --watch index.js",
     "test": "node --test test/*.test.js",
     "db:setup": "node scripts/setup.js",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "test:postgres": "node --test --test-timeout=30000 integration/*.test.js"
   },
   "keywords": [],
   "author": "",

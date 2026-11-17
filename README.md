@@ -107,3 +107,7 @@ When you return to a visible dashboard tab, readings and reports are revalidated
 - Run tests and the frontend build. Add screenshots to the repository and link them here.
 
 No public repository or hosting is created automatically. Screenshots and browser verification must be completed before claiming the UI was visually verified.
+
+### Real PostgreSQL integration checks
+
+CI also creates a disposable PostgreSQL 17 service and runs `npm run test:postgres --prefix server`. It applies the unchanged schema in a random test schema, tests actual constraints/date parsing/overlapping requests, then drops that generated schema. It never imports `.env` or the application database pool. `SWEETY_TEST_DATABASE_URL` is test-only: the command refuses external hosts and requires the `sweety_test` database and role on localhost. Never point it at Neon. Local use requires your own disposable PostgreSQL service; normal `npm test` still needs no database server.
